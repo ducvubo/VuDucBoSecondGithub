@@ -39,24 +39,35 @@ let handleCreateNewUser = async (req, res) => {
   return res.status(200).json(message);
 };
 
-
 let handleDeleteUser = async (req, res) => {
-  if(!req.body.id){
+  if (!req.body.id) {
     return res.status(200).json({
       errCode: 1,
-      errMessage: "Thiếu tham số truyền vào!"
-    })
+      errMessage: "Thiếu tham số truyền vào!",
+    });
   }
   let message = await userService.deleteUser(req.body.id);
   return res.status(200).json(message);
-}
+};
 
 let handleEditUser = async (req, res) => {
   let data = req.body;
-    let message = await userService.updateUserData(data);
-    return res.status(200).json(message)
-}
+  let message = await userService.updateUserData(data);
+  return res.status(200).json(message);
+};
 
+let getAllCode = async (req, res) => {
+  try {
+  let data = await userService.getAllCodeServiec(req.query.type);//param
+  return res.status(200).json(data);
+  } catch (e) {
+    console.log("Get all code error: ", e);
+    return res.status(200).json({
+      errCode: -1,
+      errMessage: "Lỗi của server",
+    });
+  }
+};
 
 module.exports = {
   handleLogin: handleLogin,
@@ -64,4 +75,5 @@ module.exports = {
   handleCreateNewUser: handleCreateNewUser,
   handleEditUser: handleEditUser,
   handleDeleteUser: handleDeleteUser,
+  getAllCode: getAllCode,
 };
